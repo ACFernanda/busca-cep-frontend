@@ -1,7 +1,6 @@
 import styled from "styled-components";
 
 export default function AddressBox({data}) {
-  console.log(data)
   return (
     <Container>
       <p>{data.address}</p>

@@ -6,7 +6,7 @@ import { getAddress } from "../services/api";
 import AddressBox from "../Components/AddressBox"
 
 export default function CepSearch() {
-  const [cep, setCep] = useState("");
+  const [cep, setCep] = useState(null);
   const [address, setAddress] = useState(null);
 
   async function searchCEP(event) {
@@ -14,11 +14,10 @@ export default function CepSearch() {
 
     try {
       const resultAddress = await getAddress(cep);
-      const addressInfo = resultAddress.data
-      console.log(addressInfo)
-
+      const addressInfo = resultAddress.data;
+      setAddress(addressInfo);
     } catch (error) {
-      alert(`Por favor, tente novamente. ${error.response.data}`);
+      alert(`Por favor, tente novamente. ${error.response.data}.`);
     }
   }
 
