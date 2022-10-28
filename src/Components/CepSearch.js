@@ -38,7 +38,7 @@ export default function CepSearch() {
           maskPlaceholder={null} 
           pattern="[0-9]{5}-[0-9]{3}" 
           onChange={(e) => setCep(formatCEP(e.target.value))}/><br />
-        <button type="submit">Enviar</button>
+        <button id="submit" type="submit">Enviar</button>
         <button className="clear" type="Reset" onClick={() => setAddress(null)}>Limpar</button>
       </form>
       {address !== null ? <AddressBox data={address}/> : <></>}
