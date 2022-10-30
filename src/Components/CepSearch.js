@@ -8,16 +8,19 @@ import AddressBox from "../Components/AddressBox"
 export default function CepSearch() {
   const [cep, setCep] = useState(null);
   const [address, setAddress] = useState(null);
+  const [disabled, setDisabled] = useState(false);
 
   async function searchCEP(event) {
     event.preventDefault();
 
     try {
+      setDisabled(true)
       const resultAddress = await getAddress(cep);
       const addressInfo = resultAddress.data;
       setAddress(addressInfo);
     } catch (error) {
       alert(`Por favor, tente novamente. ${error.response.data}.`);
+      setDisabled(false);
     }
   }
 
@@ -26,7 +29,7 @@ export default function CepSearch() {
   }
 
   return (
-    <Container>
+    <Container disabled={disabled}>
       <form onSubmit={searchCEP}>
         <label htmlFor="cep">CEP</label><br />
         <InputMask 
@@ -37,9 +40,15 @@ export default function CepSearch() {
           mask="99999-999" 
           maskPlaceholder={null} 
           pattern="[0-9]{5}-[0-9]{3}" 
+          disabled={disabled}
           onChange={(e) => setCep(formatCEP(e.target.value))}/><br />
-        <button id="submit" type="submit">Enviar</button>
-        <button className="clear" type="Reset" onClick={() => setAddress(null)}>Limpar</button>
+        <button 
+          id="submit" 
+          type="submit" 
+          disabled={disabled}>
+            Entrar
+        </button>
+        <button className="clear" type="Reset" onClick={() => (setAddress(null), setDisabled(false))}>Limpar</button>
       </form>
       {address !== null ? <AddressBox data={address}/> : <></>}
     </Container>  
@@ -73,7 +82,6 @@ const Container = styled.div`
     margin: 10px 10px 0 0;
     font-size: 18px;
     color: #F0F0F0;
-    background: ${(props) => props.disabled ? "green" : "#1C6EA4"};
     border: none;
     border-radius: 5px;
     cursor: pointer;
@@ -84,4 +92,8 @@ const Container = styled.div`
     background: none;
     border: none;
   }
-`
+
+  #submit {
+    background: ${(props) => props.disabled ? "#A1CBE3" : "#1C6EA4"};
+  }
+  `
